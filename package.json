@@ -1,0 +1,25 @@
+{
+  "name": "job-queue",
+  "version": "0.0.1",
+  "description": "A queueing system to schedule jobs and have multiple rate-limited consumers.",
+  "main": "lib/job-queue.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "coffee -o lib -c src/*.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GotEmB/job-queue.git"
+  },
+  "keywords": [
+    "JobQueue",
+    "ratelimit",
+    "queue"
+  ],
+  "author": "Gautham Badhrinathan",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/GotEmB/job-queue/issues"
+  },
+  "homepage": "https://github.com/GotEmB/job-queue"
+}
