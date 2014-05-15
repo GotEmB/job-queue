@@ -7,6 +7,9 @@
     "test": "vows lib/job-queue-test.js --spec",
     "prepublish": "coffee -o lib -c src/*.coffee"
   },
+  "devDependencies": {
+    "coffee-script": "latest"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/GotEmB/job-queue.git"
