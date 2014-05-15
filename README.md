@@ -1,4 +1,4 @@
-# Job Queue
+# Job Queue[![Build Status](https://travis-ci.org/GotEmB/job-queue.svg?branch=master)](https://travis-ci.org/GotEmB/job-queue)
 
 A queueing system to schedule jobs and have multiple rate-limited consumers.
 
