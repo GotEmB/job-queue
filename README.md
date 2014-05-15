@@ -33,6 +33,12 @@ jobQueue.enqueue job
 |---|---|---|
 |`job`|**Anything**| The job can either be any type (`Object`, `Function`, `Number`, ...). Its type depends on what the *consumer* takes as its argument.|
 
+### Getting Count of Pending Jobs
+
+```coffeescript
+pendingJobs = jobQueue.pendingJobs
+```
+
 ## Example Usage
 
 ```coffeescript
@@ -50,7 +56,7 @@ processQueue = new JobQueue [1..5].map(makeConsumer), 5, 1
 processQueue.addConsumers [6..10].map(makeConsumer), 80, 60
 
 # Adding 10k jobs to the process queue
-for jobId in [1..10000]
+for jobId in [1..10000] then do (jobId) ->
 	processQueue.enqueue
 		id: jobId
 		process: (consumerId) ->

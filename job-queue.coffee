@@ -8,14 +8,15 @@ class JobQueue
 	enqueue: (jobs...) =>
 		jobs.forEach (job) =>
 			sts =
-				@consumers
+				(@consumers
 					.map (x) -> consumer: x, timestamp: x.getNextTimestamp()
 					.sort (x, y) -> x.timestamp - y.timestamp
-			sts[0].consumer.timestamps.push sts[0].timestamp
+				)[0]
+			sts.consumer.timestamps.push sts.timestamp
 			setTimeout =>
 				@pendingJobs--
-				sts[0].consumer.consume job
-			, sts[0].timestamp - new Date
+				sts.consumer.consume job
+			, sts.timestamp - new Date
 			@pendingJobs++
 
 class Consumer
@@ -29,7 +30,7 @@ class Consumer
 		if @timestamps.length < @limit
 			nowTimestamp
 		else
-			nextTimestamp = new Date @timestamps[0]
+			nextTimestamp = new Date @timestamps[-@limit..][0]
 			nextTimestamp.setSeconds nextTimestamp.getSeconds() + @period
 			nextTimestamp
 
