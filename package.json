@@ -4,7 +4,7 @@
   "description": "A queueing system to schedule jobs and have multiple rate-limited consumers.",
   "main": "lib/job-queue.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vows lib/job-queue-test.js --spec",
     "prepublish": "coffee -o lib -c src/*.coffee"
   },
   "repository": {

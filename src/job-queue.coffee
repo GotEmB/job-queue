@@ -18,6 +18,7 @@ class JobQueue
 				sts.consumer.consume job
 			, sts.timestamp - new Date
 			@pendingJobs++
+		@pendingJobs
 
 class Consumer
 	constructor: (@consume, @limit, @period) ->
