@@ -1,6 +1,6 @@
 {
   "name": "job-queue",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A queueing system to schedule jobs and have multiple rate-limited consumers.",
   "main": "lib/job-queue.js",
   "scripts": {
