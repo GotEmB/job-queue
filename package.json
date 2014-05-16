@@ -8,7 +8,7 @@
     "prepublish": "coffee -o lib -c src/*.coffee"
   },
   "devDependencies": {
-    "coffee-script": "latest",
+    "coffee-script": "~1.7",
     "vows": "~0.7"
   },
   "repository": {
@@ -20,6 +20,9 @@
     "ratelimit",
     "queue"
   ],
+  "engines": {
+    "node": ">= 0.10.0"
+  },
   "author": "Gautham Badhrinathan",
   "license": "BSD",
   "bugs": {
