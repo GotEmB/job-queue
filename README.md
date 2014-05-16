@@ -13,8 +13,8 @@ jobQueue = new JobQueue consumers, limit, period
 |Parameter|Type|Description|
 |---|---|---|
 |`consumers`|**Function**|A function that will accept a *job* as the only parameter.|
-|`limit`|**Integer**|The maximum number of jobs the consumer should process in `period` seconds.|
-|`period`|**Integer**|The number of seconds `limit` applies to.|
+|`limit`|**Integer**|The maximum number of jobs the consumer should process in `period` milliseconds.|
+|`period`|**Integer**|The number of milliseconds `limit` applies to.|
 
 ### Adding Consumers
 
@@ -50,10 +50,10 @@ makeConsumer = (consumerId) ->
 		job.process consumerId
 
 # Create a process queue with 5 consumers where each supports up to 5 requests per second
-processQueue = new JobQueue [1..5].map(makeConsumer), 5, 1
+processQueue = new JobQueue [1..5].map(makeConsumer), 5, 1000
 
 # Add another 5 consumers to the process queue where each supports up to 80 jobs per minute
-processQueue.addConsumers [6..10].map(makeConsumer), 80, 60
+processQueue.addConsumers [6..10].map(makeConsumer), 80, 60 * 1000
 
 # Adding 10k jobs to the process queue
 for jobId in [1..10000] then do (jobId) ->

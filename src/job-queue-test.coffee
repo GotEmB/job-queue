@@ -15,8 +15,8 @@ vows.describe "job-queue"
 				makeConsumer = (consumerId) ->
 					(job) ->
 						job.process consumerId
-				jobQueue = new JobQueue [1..5].map(makeConsumer), 5, 1
-				jobQueue.addConsumers [6..10].map(makeConsumer), 8, 2
+				jobQueue = new JobQueue [1..5].map(makeConsumer), 5, 100
+				jobQueue.addConsumers [6..10].map(makeConsumer), 8, 200
 				for jobId in [1..500] then do (jobId) ->
 					jobQueue.enqueue
 						id: jobId
@@ -28,61 +28,61 @@ vows.describe "job-queue"
 					assert.equal jobQueue.consumers.length, 10
 				"500 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 500
-			"After 100 ms":
+			"After 10 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 100
+					, 10
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"435 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 435
-			"After 1.1 s":
+			"After 110 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 1100
+					, 110
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"410 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 410
-			"After 1.6 s":
+			"After 160 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 1600
+					, 160
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"410 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 410
-			"After 2.1 s":
+			"After 210 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 2100
+					, 210
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"345 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 345
-			"After 5.1 s":
+			"After 510 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 5100
+					, 510
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"230 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 230
-			"After 10.1 s":
+			"After 1010 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 10100
+					, 1010
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10

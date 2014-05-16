@@ -25,14 +25,14 @@ class Consumer
 		@timestamps = []
 	getNextTimestamp: =>
 		clearTimestamp = new Date
-		clearTimestamp.setSeconds clearTimestamp.getSeconds() - @period
+		clearTimestamp.setUTCMilliseconds clearTimestamp.getUTCMilliseconds() - @period
 		@timestamps.shift() while @timestamps[0] < clearTimestamp
 		nowTimestamp = new Date
 		if @timestamps.length < @limit
 			nowTimestamp
 		else
-			nextTimestamp = new Date @timestamps[-@limit..][0]
-			nextTimestamp.setSeconds nextTimestamp.getSeconds() + @period
+			nextTimestamp = new Date @timestamps[@timestamps.length - @limit]
+			nextTimestamp.setUTCMilliseconds nextTimestamp.getUTCMilliseconds() + @period
 			nextTimestamp
 
 module.exports = JobQueue
