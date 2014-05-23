@@ -2,6 +2,9 @@ JobQueue = require "./job-queue"
 vows = require "vows"
 assert = require "assert"
 
+assert.withinBounds = (value, min, max) ->
+	assert min <= value <= max, "expected within [#{min} .. #{max}], got #{value}"
+
 vows.describe "job-queue"
 	.addBatch
 		"With no consumers or jobs":
@@ -126,8 +129,8 @@ vows.describe "job-queue"
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
-				">= 480 pending jobs": (jobQueue) ->
-					assert jobQueue.pendingJobs >= 480
+				"480 ± 25 pending jobs": (jobQueue) ->
+					assert.withinBounds jobQueue.pendingJobs, 480 - 25, 480 + 25
 			"after 110 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
@@ -136,8 +139,8 @@ vows.describe "job-queue"
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
-				">= 410 pending jobs": (jobQueue) ->
-					assert jobQueue.pendingJobs >= 410
+				"410 ± 25 pending jobs": (jobQueue) ->
+					assert.withinBounds jobQueue.pendingJobs, 410 - 25, 410 + 25
 			"after 160 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
@@ -146,8 +149,8 @@ vows.describe "job-queue"
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
-				">= 380 pending jobs": (jobQueue) ->
-					assert jobQueue.pendingJobs >= 380
+				"380 ± 25 pending jobs": (jobQueue) ->
+					assert.withinBounds jobQueue.pendingJobs, 380 - 25, 380 + 25
 			"after 210 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
@@ -156,8 +159,8 @@ vows.describe "job-queue"
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
-				">= 350 pending jobs": (jobQueue) ->
-					assert jobQueue.pendingJobs >= 350
+				"350 ± 25 pending jobs": (jobQueue) ->
+					assert.withinBounds jobQueue.pendingJobs, 350 - 25, 350 + 25
 			"after 510 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
@@ -166,8 +169,8 @@ vows.describe "job-queue"
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
-				">= 150 pending jobs": (jobQueue) ->
-					assert jobQueue.pendingJobs >= 150
+				"150 ± 25 pending jobs": (jobQueue) ->
+					assert.withinBounds jobQueue.pendingJobs, 150 - 25, 150 + 25
 			"after 1010 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
