@@ -3,8 +3,8 @@ class JobQueue
 		@consumers = []
 		@pendingJobs = 0
 		@addConsumers arguments...
-	addConsumers: (consumes = [], limit, period) =>
-		@consumers.push consumes.map((x) -> new Consumer x, limit, period)...
+	addConsumers: (consumers = []) =>
+		@consumers.push consumers...
 	enqueue: (jobs...) =>
 		jobs.forEach (job) =>
 			sts =
@@ -12,7 +12,7 @@ class JobQueue
 					.map (x) -> consumer: x, timestamp: x.getNextTimestamp()
 					.sort (x, y) -> x.timestamp - y.timestamp
 				)[0]
-			sts.consumer.timestamps.push sts.timestamp
+			sts.consumer.usedTimestamp? sts.timestamp
 			setTimeout =>
 				@pendingJobs--
 				sts.consumer.consume job
@@ -20,7 +20,7 @@ class JobQueue
 			@pendingJobs++
 		@pendingJobs
 
-class Consumer
+class MovingWindowRateLimitedConsumer
 	constructor: (@consume, @limit, @period) ->
 		@timestamps = []
 	getNextTimestamp: =>
@@ -34,5 +34,12 @@ class Consumer
 			nextTimestamp = new Date @timestamps[@timestamps.length - @limit]
 			nextTimestamp.setUTCMilliseconds nextTimestamp.getUTCMilliseconds() + @period
 			nextTimestamp
+	usedTimestamp: (timestamp) =>
+		@timestamps.push timestamp
 
+class CustomRateLimitedConsumer
+	constructor: (@consume, @getNextTimestamp) ->
+
+JobQueue.MovingWindowRateLimitedConsumer = MovingWindowRateLimitedConsumer
+JobQueue.CustomRateLimitedConsumer = CustomRateLimitedConsumer
 module.exports = JobQueue
