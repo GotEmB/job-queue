@@ -15,8 +15,8 @@ vows.describe "job-queue"
 				assert.equal jobQueue.pendingJobs, 0
 		"With MovingWindowRateLimitedConsumer and 500 jobs":
 			topic: ->					
-				jobQueue = new JobQueue [1..5].map (consumerId) -> new JobQueue.MovingWindowRateLimitedConsumer ((job) -> job.process consumerId), 5, 100
-				jobQueue.addConsumers [6..10].map (consumerId) -> new JobQueue.MovingWindowRateLimitedConsumer ((job) -> job.process consumerId), 8, 200
+				jobQueue = new JobQueue [1..5].map (consumerId) -> new JobQueue.MovingWindowRateLimitedConsumer ((job) -> job.process consumerId), 5, 300
+				jobQueue.addConsumers [6..10].map (consumerId) -> new JobQueue.MovingWindowRateLimitedConsumer ((job) -> job.process consumerId), 8, 600
 				for jobId in [1..500] then do (jobId) ->
 					jobQueue.enqueue
 						id: jobId
@@ -28,61 +28,61 @@ vows.describe "job-queue"
 					assert.equal jobQueue.consumers.length, 10
 				"500 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 500
-			"after 10 ms":
+			"after 30 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 10
+					, 30
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"435 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 435
-			"after 110 ms":
+			"after 330 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 110
+					, 330
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"410 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 410
-			"after 160 ms":
+			"after 480 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 160
+					, 480
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"410 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 410
-			"after 210 ms":
+			"after 630 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 210
+					, 630
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"345 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 345
-			"after 510 ms":
+			"after 1530 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 510
+					, 1530
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"230 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 230
-			"after 1010 ms":
+			"after 3030 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 1010
+					, 3030
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
@@ -97,7 +97,7 @@ vows.describe "job-queue"
 							job.process consumerId
 						->
 							d = new Date
-							d.setUTCMilliseconds d.getUTCMilliseconds() + (counter++) * 1.5
+							d.setUTCMilliseconds d.getUTCMilliseconds() + (counter++) * 4.5
 							d
 					]...
 				jobQueue.addConsumers [6..10].map (consumerId) ->
@@ -107,7 +107,7 @@ vows.describe "job-queue"
 							job.process consumerId
 						->
 							d = new Date
-							d.setUTCMilliseconds d.getUTCMilliseconds() + (counter++) * 2.5
+							d.setUTCMilliseconds d.getUTCMilliseconds() + (counter++) * 7.5
 							d
 					]...
 				for jobId in [1..500] then do (jobId) ->
@@ -121,61 +121,61 @@ vows.describe "job-queue"
 					assert.equal jobQueue.consumers.length, 10
 				"500 pending jobs": (jobQueue) ->
 					assert.equal jobQueue.pendingJobs, 500
-			"after 10 ms":
+			"after 30 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 10
+					, 30
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"480 ± 25 pending jobs": (jobQueue) ->
 					assert.withinBounds jobQueue.pendingJobs, 480 - 25, 480 + 25
-			"after 110 ms":
+			"after 330 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 110
+					, 330
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"410 ± 25 pending jobs": (jobQueue) ->
 					assert.withinBounds jobQueue.pendingJobs, 410 - 25, 410 + 25
-			"after 160 ms":
+			"after 480 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 160
+					, 480
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"380 ± 25 pending jobs": (jobQueue) ->
 					assert.withinBounds jobQueue.pendingJobs, 380 - 25, 380 + 25
-			"after 210 ms":
+			"after 630 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 210
+					, 630
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"350 ± 25 pending jobs": (jobQueue) ->
 					assert.withinBounds jobQueue.pendingJobs, 350 - 25, 350 + 25
-			"after 510 ms":
+			"after 1530 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 510
+					, 1530
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
 				"150 ± 25 pending jobs": (jobQueue) ->
 					assert.withinBounds jobQueue.pendingJobs, 150 - 25, 150 + 25
-			"after 1010 ms":
+			"after 3030 ms":
 				topic: (jobQueue) ->
 					setTimeout =>
 						@callback null, jobQueue
-					, 1010
+					, 3030
 					undefined
 				"10 consumers": (jobQueue) ->
 					assert.equal jobQueue.consumers.length, 10
